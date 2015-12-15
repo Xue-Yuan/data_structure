@@ -14,129 +14,85 @@
 using namespace std;
  
 
-struct TreeNode {
+struct TreeNode 
+{
      int val;
      TreeNode *left;
      TreeNode *right;
      TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
- 
-class Solution {
-public:
-    vector<int> postorderTraversal(TreeNode* root) {
-    	unordered_map<TreeNode *, int> count;
-    	stack<TreeNode *> stk;
-    	std::vector<int> v;
-    	TreeNode *tmp = root;
-
-    	while(tmp || !stk.empty())
-    	{
-    		while(tmp)
-    		{
-    			stk.push(tmp);
-    			tmp = tmp->left;
-    		}
-    		if(!stk.empty())
-    		{
-    			tmp = stk.top();
-    			if(count[tmp] == 0)
-    			{
-    				count[tmp]++;
-    				tmp = tmp->right;
-    			}
-    			else if(count[tmp] == 1)
-    			{
-    				v.push_back(tmp->val);
-    				stk.pop();
-    				tmp = nullptr;		//very important
-    			}
-    		}
-    	}
-    	return v;
-    }
-};
-
-//without using hash map
-class Solution2 {
-public:
-    struct myNode
-    {
-        TreeNode *node;
-        bool isFirst;
-        myNode():node(nullptr), isFirst(false){};
-    };
-    vector<int> postorderTraversal(TreeNode* root) {
-        stack<myNode *> stk;
-        std::vector<int> v;
-        TreeNode *tmp = root;
-        myNode *mine;
-
-        while(tmp || !stk.empty())
-        {
-            while(tmp)
-            {
-                myNode *tmpNode = new myNode();
-                tmpNode->node = tmp;
-                tmpNode->isFirst = true;
-                stk.push(tmpNode);
-                tmp = tmp->left;
-            }
-            if(!stk.empty())
-            {
-                mine = stk.top();
-                if(mine->isFirst)
-                {
-                    mine->isFirst = false;
-                    tmp = mine->node->right;
-                }
-                else
-                {
-                    v.push_back(mine->node->val);
-                    stk.pop();
-                    delete mine;
-                    tmp = nullptr;      //very important
-                }
-            }
-        }
-        return v;
-    }
-};
 
 //use pair
 //some how this is slower than previous two methods
-class Solution3 {
+class Solution 
+{
 public:
-    vector<int> postorderTraversal(TreeNode* root) {
+    vector<int> postorderTraversal(TreeNode* root) 
+    {
         stack<pair<TreeNode *, bool>> stk;
-        std::vector<int> v;
-        TreeNode *tmp = root;
+        std::vector<int> ret;
+        TreeNode *cur = root;
 
-        while(tmp || !stk.empty())
+        while(cur || !stk.empty())
         {
-            while(tmp)
+            while(cur)
             {
-                stk.push({tmp, true});      //use pair
-                tmp = tmp->left;
+                stk.push({cur, true});      //use pair
+                cur = cur->left;
             }
             if(!stk.empty())
             {
-                auto &mine = stk.top();     //here must be reference
-                if(mine.second)
+                auto &top = stk.top();   //Here we have to use reference  
+                if(top.second)
                 {
-                    mine.second = false;
-                    tmp = mine.first->right;
+                    top.second = false;
+                    cur = top.first->right;
                 }
                 else
                 {
-                    v.push_back(mine.first->val);
+                    ret.push_back(top.first->val);
                     stk.pop();
-                    tmp = nullptr;      //very important
+                    cur = nullptr;      //very important
                 }
             }
         }
-        return v;
+        return ret;
     }
 };
+
+class Solution2
+{
+public:
+    vector<int> postorderTraversal(TreeNode* root) 
+    {
+        stack<TreeNode *> stk;
+        TreeNode *cur = root, *last = nullptr;
+        vector<int> ret;
+        
+        while (cur || !stk.empty())
+        {
+            while (cur)
+            {
+                stk.push(cur);
+                cur = cur->left;
+            }
+            if (!stk.empty())
+            {
+                TreeNode *top = stk.top();
+                if (top->right && last != top->right)
+                    cur = top->right;
+                else
+                {
+                    last = top;
+                    ret.push_back(top->val);
+                    stk.pop();
+                }
+            }
+        }
+        return ret;
+    }
+};
+
 
 int main()
 {

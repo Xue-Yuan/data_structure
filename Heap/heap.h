@@ -28,6 +28,7 @@ private:
         for (int i = currentSize / 2; i > 0; --i)
         percolateDown(i);
     }
+    
     void percolateDown(int hole)
     {
         T tmp = std::move(array[hole]);
@@ -88,6 +89,7 @@ public:
         }
         array[hole] = x;
     }
+
     void insert(T &&x)
     {
         if (currentSize == (int)array.size())
@@ -116,6 +118,7 @@ public:
         percolateDown(1);
         return true;
     }
+
     bool deleteMin(T &min)
     {
         if (array.empty())
@@ -125,6 +128,7 @@ public:
         percolateDown(1);
         return true;
     }
+
     void makeEmpty()
     {
         array.clear();
