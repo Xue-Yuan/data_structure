@@ -22,15 +22,14 @@ struct TreeNode
      TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-//use pair
-//some how this is slower than previous two methods
+// Record how many times the current node is on top of the stack.
 class Solution 
 {
 public:
     vector<int> postorderTraversal(TreeNode* root) 
     {
         stack<pair<TreeNode *, bool>> stk;
-        std::vector<int> ret;
+        vector<int> ret;
         TreeNode *cur = root;
 
         while(cur || !stk.empty())
@@ -52,7 +51,6 @@ public:
                 {
                     ret.push_back(top.first->val);
                     stk.pop();
-                    cur = nullptr;      //very important
                 }
             }
         }
@@ -60,6 +58,7 @@ public:
     }
 };
 
+// Record the last visited node.
 class Solution2
 {
 public:
@@ -83,7 +82,7 @@ public:
                     cur = top->right;
                 else
                 {
-                    last = top;
+                    last = top; 
                     ret.push_back(top->val);
                     stk.pop();
                 }
