@@ -8,13 +8,10 @@ private:
     vector<int> arr;
     vector<int> bitree;
 public:
-    binaryIndexTree(vector<int> &nums):arr(nums) 
-    {
-        bitree.assign(nums.size() + 1, 0);
+    binaryIndexTree(vector<int> &nums):arr(nums), bitree(nums.size() + 1, 0) 
+    {        
         for(int i = 0; i < nums.size(); ++i)
-        {
             add(i + 1, bitree.size(), nums[i]);
-        }
     }
 
     void update(int i, int val) 

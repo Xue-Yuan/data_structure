@@ -17,6 +17,8 @@ public:
         tree = buildTree(0, this->nums.size() - 1, this->nums);
     }
 
+    ~segmentTree() {destoryTree(tree);}
+    
     void update(int i, int val) 
     {
         int diff = val - nums[i];
@@ -56,5 +58,12 @@ private:
         if(!root || j < root->start || i > root->end) return 0;
         if(i <= root->start && j >= root->end) return root->val;
         return getSum(root->left, i, j) + getSum(root->right, i, j);
+    }
+    void destoryTree(segmentTreeNode *root)
+    {
+        if (!root) return;
+        destoryTree(root->left);
+        destoryTree(root->right);
+        delete root;
     }
 };
