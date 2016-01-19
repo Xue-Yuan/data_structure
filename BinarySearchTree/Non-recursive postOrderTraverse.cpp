@@ -23,34 +23,29 @@ struct TreeNode
 };
 
 // Record how many times the current node is on top of the stack.
-class Solution 
+class Solution
 {
 public:
-    vector<int> postorderTraversal(TreeNode* root) 
+    vector<int> postorderTraversal(TreeNode* root)
     {
-        stack<pair<TreeNode *, bool>> stk;
         vector<int> ret;
+        stack<pair<TreeNode*, bool>> stk;
         TreeNode *cur = root;
-
         while(cur || !stk.empty())
         {
-            while(cur)
+            if (cur)
             {
-                stk.push({cur, true});      //use pair
+                stk.push({cur, false});
                 cur = cur->left;
             }
-            if(!stk.empty())
+            else if (!stk.empty())
             {
-                auto &top = stk.top();   //Here we have to use reference  
-                if(top.second)
-                {
-                    top.second = false;
-                    cur = top.first->right;
-                }
+                auto p = stk.top(); stk.pop();
+                if (p.second) ret.push_back(p.first->val);
                 else
                 {
-                    ret.push_back(top.first->val);
-                    stk.pop();
+                    stk.push({p.first, !p.second});
+                    cur = p.first->right;
                 }
             }
         }

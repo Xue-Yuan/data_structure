@@ -26,7 +26,7 @@ private:
     void buildHeap()
     {
         for (int i = currentSize / 2; i > 0; --i)
-        percolateDown(i);
+            percolateDown(i);
     }
     
     void percolateDown(int hole)
@@ -42,8 +42,7 @@ private:
                 array[hole] = std::move(array[child]);
                 hole = child;
             }
-            else
-                break;
+            else break;
         }
         array[hole] = std::move(tmp);
     }

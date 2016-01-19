@@ -10,14 +10,14 @@
 template <class T>
 T &median3(std::vector<T> &vec, int b, int e)
 {	
-	auto &beg = vec[b], &end = vec[e], &mid = vec[(b+e)/2];
-	if(beg > mid)
-		std::swap(beg, mid);	// X, (中或大), X
-	if(beg > end)
-		std::swap(beg, end);	// 小，(中或大)，(中或大)
-	if(end > mid)
-		std::swap(mid, end);
-	return end;
+	int m = b + ((e - b) >> 1);
+	if(vec[b] > vec[m])
+		std::swap(vec[b], vec[m]);	// X, (中或大), X
+	if(vec[b] > vec[e])
+		std::swap(vec[b], vec[e]);	// 小，(中或大)，(中或大)
+	if(vec[e] > vec[m])
+		std::swap(vec[e], vec[m]);
+	return vec[e];
 }
 
 template <class T>
@@ -32,13 +32,11 @@ void quicksort(std::vector<T> &vec, int beg, int end)
 	auto &pivot = median3(vec, beg, end);
 		
 	int i = beg, j = end;
-	for(;;)
+	while(i < j)
 	{	
 		while(vec[--j] > pivot);
-		while(pivot > vec[++i]);
-		if(i < j)
-			std::swap(vec[i], vec[j]);
-		else break;
+		while(vec[++i] < pivot);
+		if(i < j) std::swap(vec[i], vec[j]);
 	}
 	std::swap(pivot, vec[i]);
 	quicksort(vec, beg, i-1);

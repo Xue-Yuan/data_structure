@@ -13,12 +13,9 @@ public:
     int &median3(vector<int> &nums, int beg, int end)
     {
         int &b = nums[beg], &e = nums[end], &m = nums[(beg + end) / 2];
-        if(b > m)
-            swap(b, m);
-        if(b > e)
-            swap(b, e);
-        if(m < e)
-            swap(m, e);
+        if(b > m) swap(b, m);
+        if(b > e) swap(b, e);
+        if(m < e) swap(m, e);
         return e;
     }
     void quickSelect(vector<int> &nums, int b, int e, int k)
@@ -26,8 +23,7 @@ public:
         if(b >= e) return;
         if(b + 1 == e)
         {
-            if(nums[b] > nums[e])
-                swap(nums[b], nums[e]);
+            if(nums[b] > nums[e]) swap(nums[b], nums[e]);
             return;
         }
 
@@ -37,8 +33,7 @@ public:
         {
             while(nums[--j] > pivot);
             while(nums[++i] < pivot);
-            if(i < j)
-                swap(nums[i], nums[j]);
+            if(i < j) swap(nums[i], nums[j]);
         }
         swap(nums[i], pivot);
         if(k-1 < i) quickSelect(nums, b, i - 1, k);

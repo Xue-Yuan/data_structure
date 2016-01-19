@@ -146,12 +146,20 @@ public:
 
 class Trie2
 {
+private:
+	void destory(trieNode *t)
+	{
+		if (!t) return;
+		for (auto &e : t->next)
+			if (e) destory(e);
+		delete t;
+	}
 public:
     Trie() 
     {
         root = new TrieNode();
     }
-
+    ~Trie() {destory(root);}
     // Inserts a word into the trie.
     void insert(string word) 
     {
