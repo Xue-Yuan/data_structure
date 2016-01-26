@@ -14,7 +14,7 @@ private:
 public:
     segmentTree(vector<int> &nums): nums(move(nums))
     {
-        tree = buildTree(0, this->nums.size() - 1, this->nums);
+        tree = buildTree(0, this->nums.size() - 1);
     }
 
     ~segmentTree() {destoryTree(tree);}
@@ -32,7 +32,7 @@ public:
     }
 
 private:
-    segmentTreeNode* buildTree(int start, int end, vector<int> &nums)
+    segmentTreeNode* buildTree(int start, int end)
     {
         if(start > end) return nullptr;
         segmentTreeNode *root = new segmentTreeNode(start, end);
@@ -40,8 +40,8 @@ private:
         else
         {
             int mid = start + ((end - start) >> 1);
-            root->left = buildTree(start, mid, nums);
-            root->right = buildTree(mid + 1, end, nums);
+            root->left = buildTree(start, mid);
+            root->right = buildTree(mid + 1, end);
             root->val = root->left->val + root->right->val;
         }
         return root;
